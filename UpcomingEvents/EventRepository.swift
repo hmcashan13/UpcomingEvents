@@ -10,8 +10,9 @@ import Combine
 
 /// Stores and fetches event data
 class EventRepository {
-    /// Observable `EventData`
+    /// Observable of list of`EventData`
     var data: CurrentValueSubject<[EventModel]?, Never> = CurrentValueSubject<[EventModel]?, Never>(nil)
+    /// Observable  of loading object that represents whether we are in the process of fetching data
     var loading: CurrentValueSubject<Bool, Never> = CurrentValueSubject<Bool, Never>(true)
     
     private var network: FakeNetwork = FakeNetwork()
@@ -41,8 +42,8 @@ class EventRepository {
         for i in 0..<events.count-1 {
             var j = i + 1
             while j < events.count, events[i].end > events[j].start {
-                events[i].isConflict = true
-                events[j].isConflict = true
+                events[i].endConflict = true
+                events[j].startConflict = true
                 j+=1
             }
         }

@@ -9,13 +9,6 @@ import UIKit
 
 let dateFormatter = ISO8601DateFormatter()
 
-public func removeTimeStamp(fromDate: Date) -> Date {
-    guard let date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month, .day], from: fromDate)) else {
-        fatalError("Failed to strip time from Date object")
-    }
-    return date
-}
-
 func showLoadingView(presenter: UIViewController) {
     let alert = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
 
@@ -31,6 +24,7 @@ func showLoadingView(presenter: UIViewController) {
 func removeLoadingView(remover: UIViewController) {
     remover.dismiss(animated: false, completion: nil)
 }
+
 extension Date {
     func getDate() -> String {
         let dateString = dateFormatter.string(from: self).components(separatedBy: "T")[0]

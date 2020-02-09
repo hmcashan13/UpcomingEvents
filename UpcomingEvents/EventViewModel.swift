@@ -13,9 +13,11 @@ class EventViewModel: ObservableObject {
     private let repository: EventRepository
     private var disposables: Set<AnyCancellable> = Set<AnyCancellable>()
     
-    /// Sorted array of `EventModel`s that holds the events data to display to the user
+    /// Sorted matrix of `EventModel` that holds the events data to display to the user with each array being specific to a particular day/section in tableView
     @Published var data: [[EventUI]]?
+    /// Sorted array of dates that represent the day for the header section
     @Published var dateList: [String]?
+    /// Boolean that represents whether we are currently fetching data
     @Published var loading: Bool = true
     
     init(repository: EventRepository) {
@@ -44,9 +46,10 @@ class EventViewModel: ObservableObject {
     
     /// Clear data
     func clear() {
+        loading = false
         repository.clear()
     }
-    // Creating a Matrix of events to build tableView and list of dates to fill in headers of sections
+    // Creating a Matrix of EventModels to build tableView and list of dates to fill in headers of sections
     private func getMatrixAndOrder(_ events: [EventModel]) -> ([[EventUI]],[String]) {
         var eventMatrix = [[EventUI]]()
         var dateOrdering = [String]()
@@ -54,7 +57,7 @@ class EventViewModel: ObservableObject {
         var i = -1
         for event in events {
             let date = event.start.getDate()
-            let ui = EventUI(title: event.title, start: event.start.getTime(), end: event.end.getTime(), isConflict: event.isConflict)
+            let ui = EventUI(title: event.title, start: event.start.getTime(), end: event.end.getTime(), startConflict: event.startConflict, endConflict: event.endConflict)
             if prevDate == date {
                 eventMatrix[i].append(ui)
             } else {

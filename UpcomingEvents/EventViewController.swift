@@ -19,6 +19,7 @@ class EventViewController: UIViewController, UITableViewDelegate,  UITableViewDa
         
         tableView.delegate = self
         tableView.dataSource = self
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -39,12 +40,11 @@ class EventViewController: UIViewController, UITableViewDelegate,  UITableViewDa
         viewModel.clear()
         tableView.reloadData()
     }
+    
     @IBAction func refresh(_ sender: Any) {
         viewModel.refresh()
         tableView.reloadData()
     }
-    
-
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier: String = "EventTableViewCell"
@@ -52,14 +52,17 @@ class EventViewController: UIViewController, UITableViewDelegate,  UITableViewDa
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? EventTableViewCell else {
             fatalError("The dequeued cell is not an instance of EventTableViewCell.")
         }
+        // Setup EventTableViewCell only if there is data
         if let data = viewModel.data {
             cell.title.text = data[indexPath.section][indexPath.row].title
             cell.startTime.text = data[indexPath.section][indexPath.row].start
             cell.endTime.text = data[indexPath.section][indexPath.row].end
-            cell.isConflict.isHidden = !data[indexPath.section][indexPath.row].isConflict
+            cell.startConflict.isHidden = !data[indexPath.section][indexPath.row].startConflict
+            cell.endConflict.isHidden = !data[indexPath.section][indexPath.row].endConflict
             return cell
         }
         cell.isHidden = true
+        // otherwise section headers and table cells won't get wiped out
         tableView.reloadData()
         return cell
     }

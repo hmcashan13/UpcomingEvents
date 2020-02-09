@@ -11,14 +11,16 @@ struct EventUI {
     let title: String
     let start: String
     let end: String
-    var isConflict: Bool = false
+    var startConflict: Bool = false
+    var endConflict: Bool = false
 }
 /// Event data structure used to sort
 struct EventModel {
     let title: String
     let start: Date
     let end: Date
-    var isConflict: Bool = false
+    var startConflict: Bool = false
+    var endConflict: Bool = false
 }
 
 /// Event data structure used to convert data from json
